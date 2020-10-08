@@ -29,8 +29,6 @@
 
     <table class="table">
       <thead>
-        <label>For Favourite</label>
-        <input type="checkbox" @change="show" />
         <tr>
           <th scope="col">Email</th>
           <th scope="col">Title</th>
@@ -46,7 +44,7 @@
             <p class="text-muted">{{ item.description }}</p>
           </td>
           <td>
-            {{ item.time }}
+            {{ item.time | convertTime}}
           </td>
           <td>
             <button class="btn btn-danger" @click="remove(item)">Delete</button>
@@ -59,7 +57,7 @@
 </template>
 
 <script>
-// import moment from 'moment'
+import moment from 'moment'
 export default {
   data() {
     return {
@@ -73,24 +71,28 @@ export default {
   computed: {
     inboxMail() {
       return this.$store.getters["inbox"];
-    }
-    
+    },
   },
   methods: {
     sendEmail() {
       this.$store.commit("sendEmailToSentBox", { dataEmail: this.formEmail });
+      this.formEmail = {
+        emailName: "",
+        name: "",
+        description: "",
+      };
     },
     remove(item) {
-      this.$store.commit("removeEmail", item.id);
+      this.$store.commit("removeEmail", item);
     },
     favourite(item) {
-      this.$store.commit("favouriteMail", item.id);
+      this.$store.commit("favouriteMail", item);
     },
-    // show() {
-    //   this.$store.getters["showFavourite"];
-    // },
-    
-    
   },
+  filters: {
+    convertTime: function(value) {
+      return moment(value).format('HH:mm DD MMM YYYY');
+    }
+  }
 };
 </script>

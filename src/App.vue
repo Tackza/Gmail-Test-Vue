@@ -3,7 +3,9 @@
     <div>
       <router-link to='/'>Inbox</router-link> |
       <router-link to='/sendbox'>SendBox</router-link> |
-      <router-link to='/bin'>Bin</router-link>
+      <router-link to='/bin'>Bin</router-link> |
+      <router-link to='/favourite'>Favourite</router-link>
+
     </div>
     <router-view />
   </div>

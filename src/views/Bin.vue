@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <h2>BinBox</h2>
     <table class="table">
       <thead>
         <tr>
@@ -15,7 +16,7 @@
             {{ item.name }}
             <p class="text-muted">{{ item.description }}</p>
           </td>
-          <td>{{ item.time }}</td>
+          {{ item.time | convertTime}}
         </tr>
       </tbody>
     </table>
@@ -23,13 +24,20 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   name: "bin",
   computed: {
     binMail() {
       return this.$store.getters["binBox"];
     },
+    
   },
+  filters: {
+    convertTime: function(value) {
+      return moment(value).format('HH:mm DD MMM YYYY');
+    }
+  }
 };
 </script>
 

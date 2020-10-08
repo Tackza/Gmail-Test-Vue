@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2>SentBox</h2>
+    <h2>Favourite</h2>
     <table class="table">
       <thead>
         <tr>
@@ -10,7 +10,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) of sentboxMail" :key="index">
+        <tr v-for="(item, index) of favouriteMail" :key="index">
           <td>{{ item.emailName }}</td>
           <td>
             {{ item.name }}
@@ -26,10 +26,9 @@
 <script>
 import moment from 'moment'
 export default {
-  name: "SendBox",
   computed: {
-    sentboxMail() {
-      return this.$store.getters["sentBox"];
+    favouriteMail() {
+      return this.$store.getters["showFavourite"];
     },
   },
   filters: {

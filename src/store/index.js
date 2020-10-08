@@ -24,17 +24,14 @@ export default new Vuex.Store({
       state.send.push(result);
     },
 
-    removeEmail(state, id) {
-      const moveMailToBin = state.inbox.filter((item) => item.id === id);
-      state.bin.push(moveMailToBin[0]);
+    removeEmail(state, item) {
+      state.bin.push(item);
 
-      const targetMail = state.inbox.filter((item) => item.id !== id);
-      state.inbox = targetMail;
+      let targetMail = state.inbox.filter((mail) => mail.id !== item.id);
+      state.inbox = targetMail
     },
-    favouriteMail(state, id) {
-      state.inbox
-        .filter((type) => type.id === id)
-        .map((item) => (item.stared = !item.stared));
+    favouriteMail(state, item) {
+      item.stared = true;
     },
   },
   getters: {
@@ -49,8 +46,7 @@ export default new Vuex.Store({
     },
     showFavourite(state) {
       const showItem = state.inbox.filter((item) => item.stared === true);
-      console.log(showItem);
-      return (state.inbox = showItem);
+      return showItem;
     },
   },
 });
