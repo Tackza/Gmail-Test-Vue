@@ -1,29 +1,50 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Inbox from "../views/Inbox.vue";
+import InboxMail from "../views/InboxMail.vue";
+import SendBox from "../views/SendBox.vue";
+import SendBoxMail from "../views/SendBoxMail.vue";
+import Bin from "../views/Bin.vue";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: "/",
+    name: "inbox",
+    component: Inbox,
+    children: [
+      {
+        path: "/mail/:id",
+        name: "mail",
+        component: InboxMail,
+      },
+    ],
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
+    path: "/bin",
+    name: "bin",
+    component: Bin,
+  },
+
+  {
+    path: "/sendbox",
+    name: "send-box",
+    component: SendBox,
+    children: [
+      {
+        path: "/:id",
+        name: "send-mail",
+        component: SendBoxMail,
+      },
+    ],
+  },
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
