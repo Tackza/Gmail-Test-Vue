@@ -27,6 +27,14 @@
 import moment from 'moment'
 export default {
   name: "bin",
+  mounted () {
+    this.fetchData()
+  },
+  methods: {
+    fetchData() {
+      this.$store.dispatch('fetchDataBinBox')
+    }
+  },
   computed: {
     binMail() {
       return this.$store.getters["binBox"];

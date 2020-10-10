@@ -44,11 +44,16 @@
             <p class="text-muted">{{ item.description }}</p>
           </td>
           <td>
-            {{ item.time | convertTime}}
+            {{ item.time | convertTime }}
           </td>
           <td>
             <button class="btn btn-danger" @click="remove(item)">Delete</button>
-            <input type="checkbox" @change="favourite(item)" />favourite
+
+            <input
+              type="checkbox"
+              aria-label="Checkbox for following text input"
+              @click="favourite(item)"
+            />
           </td>
         </tr>
       </tbody>
@@ -57,7 +62,9 @@
 </template>
 
 <script>
-import moment from 'moment'
+import moment from "moment";
+import firebase from "../../FirebaseInstance";
+import { uuid } from "../../utils";
 export default {
   data() {
     return {
@@ -68,31 +75,55 @@ export default {
       },
     };
   },
+  mounted() {
+    this.fetchData();
+  },
   computed: {
     inboxMail() {
       return this.$store.getters["inbox"];
     },
   },
   methods: {
-    sendEmail() {
-      this.$store.commit("sendEmailToSentBox", { dataEmail: this.formEmail });
+     fetchData() {
+      this.$store.dispatch("fetchData");
+    },
+
+     sendEmail() {
+      const dataEmail = {
+        emailName: this.formEmail.emailName,
+        name: this.formEmail.name,
+        description: this.formEmail.description,
+        id: uuid(),
+        stared: false,
+        time: Date(),
+      };
+      
+      this.$store.dispatch("sendEmailToSentBox", { dataEmail });
+      
       this.formEmail = {
         emailName: "",
         name: "",
         description: "",
       };
     },
-    remove(item) {
-      this.$store.commit("removeEmail", item);
+
+    async remove(item) {
+      this.$store.dispatch("removeEmail", item);
     },
-    favourite(item) {
+
+    async favourite(item) {
       this.$store.commit("favouriteMail", item);
+
+      await firebase.firestore
+        .collection("favourite")
+        .doc(item.id.toString())
+        .set(item);
     },
   },
   filters: {
-    convertTime: function(value) {
-      return moment(value).format('HH:mm DD MMM YYYY');
-    }
-  }
+    convertTime: function (value) {
+      return moment(value).format("HH:mm DD MMM YYYY");
+    },
+  },
 };
 </script>

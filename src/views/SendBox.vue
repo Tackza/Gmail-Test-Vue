@@ -16,7 +16,9 @@
             {{ item.name }}
             <p class="text-muted">{{ item.description }}</p>
           </td>
-          {{ item.time | convertTime}}
+          {{
+            item.time | convertTime
+          }}
         </tr>
       </tbody>
     </table>
@@ -24,19 +26,27 @@
 </template>
 
 <script>
-import moment from 'moment'
+import moment from "moment";
 export default {
   name: "SendBox",
+  mounted() {
+    this.fetchData();
+  },
   computed: {
     sentboxMail() {
       return this.$store.getters["sentBox"];
     },
   },
-  filters: {
-    convertTime: function(value) {
-      return moment(value).format('HH:mm DD MMM YYYY');
+  methods: {
+    fetchData() {
+      this.$store.dispatch('fetchDataSendBox')
     }
-  }
+  },
+  filters: {
+    convertTime: function (value) {
+      return moment(value).format("HH:mm DD MMM YYYY");
+    },
+  },
 };
 </script>
 
